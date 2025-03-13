@@ -28,15 +28,17 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
     const balance = totalIncome - totalExpense;
     const balanceLabel = balance >= 0 ? 'Surplus' : 'Deficit';
     const balanceColor = balance >= 0 ? COLORS.surplus : COLORS.deficit;
-
-    // Create a middle "Budget" node
-    const middleNodeIndex = incomes.length;
     
+    // Calculate node heights proportionally
+    const getNodeHeight = (amount: number, total: number) => {
+      return Math.max(30, (amount / total) * 200); // Min height of 30px
+    };
+
     // Create nodes
     const nodes = [
       // Income nodes (left side)
-      ...incomes.map((income, index) => {
-        const percentage = ((income.amount / totalIncome) * 100).toFixed(2);
+      ...incomes.map((income) => {
+        const percentage = ((income.amount / totalIncome) * 100).toFixed(1);
         return {
           name: income.name,
           displayName: `${income.name}\n${percentage}%`,
@@ -58,8 +60,8 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       },
       
       // Expense nodes (right side)
-      ...expenses.map((expense, index) => {
-        const percentage = ((expense.amount / totalExpense) * 100).toFixed(2);
+      ...expenses.map((expense) => {
+        const percentage = ((expense.amount / totalExpense) * 100).toFixed(1);
         return {
           name: expense.name,
           displayName: `${expense.name}\n${percentage}%`,
@@ -74,9 +76,9 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       // Balance node (if needed)
       ...(balance !== 0 ? [{
         name: balanceLabel,
-        displayName: `${balanceLabel}\n${((Math.abs(balance) / totalIncome) * 100).toFixed(2)}%`,
+        displayName: `${balanceLabel}\n${((Math.abs(balance) / totalIncome) * 100).toFixed(1)}%`,
         value: Math.abs(balance),
-        percentage: ((Math.abs(balance) / totalIncome) * 100).toFixed(2),
+        percentage: ((Math.abs(balance) / totalIncome) * 100).toFixed(1),
         category: 'balance' as const,
         color: balanceColor,
       }] : [])
@@ -87,14 +89,14 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       // Income to Budget links
       ...incomes.map((income, incomeIndex) => ({
         source: incomeIndex,
-        target: middleNodeIndex,
+        target: incomes.length, // Index of Budget node
         value: income.amount,
       })),
       
       // Budget to Expense links
       ...expenses.map((expense, expenseIndex) => ({
-        source: middleNodeIndex,
-        target: middleNodeIndex + 1 + expenseIndex,
+        source: incomes.length, // Index of Budget node
+        target: incomes.length + 1 + expenseIndex,
         value: expense.amount,
       })),
     ];
@@ -102,8 +104,8 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
     // Add balance link if needed
     if (balance !== 0) {
       links.push({
-        source: middleNodeIndex,
-        target: middleNodeIndex + 1 + expenses.length,
+        source: incomes.length, // Index of Budget node
+        target: incomes.length + 1 + expenses.length, // Index of Balance node
         value: Math.abs(balance),
       });
     }
@@ -222,8 +224,11 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
             data={data}
             node={CustomNode}
             link={CustomLink}
-            nodePadding={20}
-            margin={{ top: 10, right: 160, bottom: 10, left: 160 }}
+            nodePadding={40}
+            nodeWidth={30}
+            linkCurvature={0.5}
+            iterations={64}
+            margin={{ top: 20, right: 160, bottom: 20, left: 160 }}
           >
             <Tooltip
               formatter={(value: number) => formatValue(value)}
