@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -78,7 +77,7 @@
   }
 
   .animated-link {
-    transition: stroke 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out, stroke-width 0.3s ease-in-out;
+    transition: fill 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out, fill-opacity 0.3s ease-in-out;
   }
 }
 
@@ -87,11 +86,13 @@
 }
 
 .sankey-node:hover {
-  filter: brightness(0.9);
+  filter: brightness(0.95);
+  cursor: pointer;
 }
 
 .sankey-link:hover {
-  stroke-opacity: 0.8;
+  fill-opacity: 0.7;
+  cursor: pointer;
 }
 
 /* ReactFlow customizations */

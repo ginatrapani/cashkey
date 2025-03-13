@@ -11,10 +11,17 @@ interface SankeyDiagramProps {
 }
 
 const COLORS = {
-  income: 'rgb(52, 199, 89)',
-  expense: 'rgb(255, 59, 48)',
-  surplus: 'rgb(0, 122, 255)',
-  deficit: 'rgb(255, 149, 0)',
+  income: '#757575', // Gray for income
+  expense: '#757575', // Gray for expense
+  budget: '#EEEEEE', // Light gray for budget
+  surplus: '#8FBC8F', // Soft green for surplus
+  deficit: '#CD5C5C', // Soft red for deficit
+  link: {
+    income: '#DDDDDD', // Light gray for income links
+    expense: '#DDDDDD', // Light gray for expense links
+    surplus: '#A8D5A8', // Light green for surplus
+    deficit: '#E8A5A5', // Light red for deficit
+  }
 };
 
 const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, className }) => {
@@ -26,98 +33,78 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
     const totalIncome = incomes.reduce((sum, item) => sum + item.amount, 0);
     const totalExpense = expenses.reduce((sum, item) => sum + item.amount, 0);
     const balance = totalIncome - totalExpense;
-    const balanceLabel = balance >= 0 ? 'Surplus' : 'Deficit';
-    const balanceColor = balance >= 0 ? COLORS.surplus : COLORS.deficit;
+    const balanceLabel = balance >= 0 ? 'Savings' : 'Deficit';
 
-    // Create nodes
+    // Create nodes array
     const nodes = [
+      // Budget node (center node)
+      {
+        name: `Budget\n${formatValue(totalIncome)}`,
+        value: totalIncome,
+        category: 'budget' as const,
+        color: COLORS.budget,
+      },
+      
       // Income nodes
-      ...incomes.map((income, index) => ({
+      ...incomes.map((income) => ({
         name: income.name,
         value: income.amount,
         itemId: income.id,
         category: 'income' as const,
-        color: COLORS.income,
+        color: income.color || COLORS.income,
       })),
       
       // Expense nodes
-      ...expenses.map((expense, index) => ({
+      ...expenses.map((expense) => ({
         name: expense.name,
         value: expense.amount,
         itemId: expense.id,
         category: 'expense' as const,
-        color: COLORS.expense,
+        color: expense.color || COLORS.expense,
       })),
       
-      // Balance node
-      {
+      // Balance node (if there is a balance)
+      ...(balance !== 0 ? [{
         name: balanceLabel,
         value: Math.abs(balance),
         category: 'balance' as const,
-        color: balanceColor,
-      }
+        color: balance >= 0 ? COLORS.surplus : COLORS.deficit,
+      }] : [])
     ];
 
-    // Calculate source/target indices
-    const totalNode = incomes.length;
-    const expenseStartIndex = incomes.length;
-    const balanceIndex = incomes.length + expenses.length;
+    // Calculate indices for different node types
+    const budgetIndex = 0;
+    const incomeStartIndex = 1;
+    const expenseStartIndex = incomes.length + 1;
+    const balanceIndex = incomes.length + expenses.length + 1;
 
-    // Create links
+    // Create links array
     const links = [
-      // Income to expense links
-      ...incomes.flatMap((income, incomeIndex) => 
-        expenses.map((expense, expenseIndex) => {
-          // Distribute income proportionally to expenses
-          const incomeProportion = income.amount / totalIncome;
-          const value = Math.min(
-            income.amount, 
-            expense.amount * incomeProportion
-          );
-          
-          return {
-            source: incomeIndex,
-            target: expenseStartIndex + expenseIndex,
-            value: value,
-          };
-        })
-      ),
+      // Income to Budget links
+      ...incomes.map((income, idx) => ({
+        source: incomeStartIndex + idx,
+        target: budgetIndex,
+        value: income.amount,
+        category: 'income' as const,
+      })),
+      
+      // Budget to Expense links
+      ...expenses.map((expense, idx) => ({
+        source: budgetIndex,
+        target: expenseStartIndex + idx,
+        value: expense.amount,
+        category: 'expense' as const,
+      })),
     ];
 
-    // Add balance link (from each income source to balance)
+    // Add balance link if there is a balance
     if (balance !== 0) {
-      incomes.forEach((income, index) => {
-        const remainingIncome = income.amount - 
-          links.filter(link => link.source === index)
-            .reduce((sum, link) => sum + link.value, 0);
-        
-        if (remainingIncome > 0) {
-          links.push({
-            source: index,
-            target: balanceIndex,
-            value: remainingIncome,
-          });
-        }
+      links.push({
+        source: budgetIndex,
+        target: balanceIndex,
+        value: Math.abs(balance),
+        category: balance >= 0 ? 'surplus' : 'deficit',
       });
-      
-      // If expenses exceed income, add links from expenses to deficit
-      if (balance < 0) {
-        const expensesNotCovered = Math.abs(balance);
-        expenses.forEach((expense, index) => {
-          const expenseIndex = expenseStartIndex + index;
-          const incomeToExpense = links.filter(link => link.target === expenseIndex)
-            .reduce((sum, link) => sum + link.value, 0);
-          
-          const notCovered = expense.amount - incomeToExpense;
-          if (notCovered > 0) {
-            links.push({
-              source: expenseIndex,
-              target: balanceIndex,
-              value: notCovered,
-            });
-          }
-        });
-      }
     }
 
     return { nodes, links };
@@ -134,6 +121,28 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
   const CustomNode = ({ x, y, width, height, index, payload }: any) => {
     const node = data.nodes[index];
     const nodeColor = node.color;
+    const isBudget = node.category === 'budget';
+    const isIncome = node.category === 'income';
+    const isExpense = node.category === 'expense';
+    const isBalance = node.category === 'balance';
+    
+    // Position text for nodes based on their type
+    const textX = isIncome 
+      ? x - 10
+      : isExpense || isBalance 
+        ? x + width + 10
+        : x + width / 2;
+    
+    const textAnchor = isIncome 
+      ? 'end' 
+      : isExpense || isBalance 
+        ? 'start'
+        : 'middle';
+    
+    // For budget, split text into two lines
+    const lines = isBudget && node.name.includes('\n') 
+      ? node.name.split('\n')
+      : [node.name];
     
     return (
       <g>
@@ -143,72 +152,100 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
           width={width}
           height={height}
           fill={nodeColor}
-          fillOpacity={0.9}
+          fillOpacity={isBudget ? 0.8 : 0.95}
           className="animated-node sankey-node"
-          rx={4}
-          ry={4}
+          rx={2}
+          ry={2}
+          stroke={isBudget ? '#CCCCCC' : 'none'}
+          strokeWidth={isBudget ? 1 : 0}
         />
-        <text
-          x={node.category === 'income' ? x - 5 : x + width + 5}
-          y={y + height / 2}
-          textAnchor={node.category === 'income' ? 'end' : 'start'}
-          dominantBaseline="middle"
-          className="text-xs font-medium fill-foreground"
-        >
-          {node.name}
-        </text>
+        
+        {lines.map((line, i) => (
+          <text
+            key={i}
+            x={textX}
+            y={y + height / 2 + (lines.length > 1 ? (i - 0.5) * 20 : 0)}
+            textAnchor={textAnchor}
+            dominantBaseline="middle"
+            className={cn(
+              "fill-foreground",
+              isBudget ? "font-medium text-sm" : "text-sm",
+              i === 0 && isBudget ? "font-bold" : ""
+            )}
+          >
+            {line}
+          </text>
+        ))}
+        
+        {!isBudget && (
+          <text
+            x={isIncome ? x - 10 : x + width + 10}
+            y={y + height / 2 + 20}
+            textAnchor={isIncome ? 'end' : 'start'}
+            dominantBaseline="middle"
+            className="text-sm font-semibold fill-foreground"
+          >
+            {formatValue(node.value)}
+          </text>
+        )}
       </g>
     );
   };
 
   const CustomLink = (props: any) => {
     const { sourceX, sourceY, sourceControlX, targetX, targetY, targetControlX, linkWidth, index } = props;
-    const isBalance = data.links[index].target === data.nodes.length - 1;
     
-    const gradientId = `linkGradient${index}`;
-    const sourceNode = data.nodes[data.links[index].source];
-    const targetNode = data.nodes[data.links[index].target];
+    const linkCategory = data.links[index].category;
+    let linkColor;
+    
+    switch (linkCategory) {
+      case 'income':
+        linkColor = COLORS.link.income;
+        break;
+      case 'expense':
+        linkColor = COLORS.link.expense;
+        break;
+      case 'surplus':
+        linkColor = COLORS.link.surplus;
+        break;
+      case 'deficit':
+        linkColor = COLORS.link.deficit;
+        break;
+      default:
+        linkColor = COLORS.link.income;
+    }
     
     return (
-      <g>
-        <defs>
-          <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor={sourceNode.color || COLORS.income} />
-            <stop offset="100%" stopColor={targetNode.color || COLORS.expense} />
-          </linearGradient>
-        </defs>
-        <path
-          d={`
-            M${sourceX},${sourceY}
-            C${sourceControlX},${sourceY} ${targetControlX},${targetY} ${targetX},${targetY}
-            L${targetX},${targetY + linkWidth}
-            C${targetControlX},${targetY + linkWidth} ${sourceControlX},${sourceY + linkWidth} ${sourceX},${sourceY + linkWidth}
-            Z
-          `}
-          fill={`url(#${gradientId})`}
-          stroke="none"
-          strokeWidth={0}
-          fillOpacity={0.5}
-          className="animated-link sankey-link"
-        />
-      </g>
+      <path
+        d={`
+          M${sourceX},${sourceY}
+          C${sourceControlX},${sourceY} ${targetControlX},${targetY} ${targetX},${targetY}
+          L${targetX},${targetY + linkWidth}
+          C${targetControlX},${targetY + linkWidth} ${sourceControlX},${sourceY + linkWidth} ${sourceX},${sourceY + linkWidth}
+          Z
+        `}
+        fill={linkColor}
+        stroke="none"
+        className="animated-link sankey-link"
+      />
     );
   };
 
   return (
-    <div className={cn("w-full h-[400px] mt-6", className)}>
+    <div className={cn("w-full h-[450px] mt-6", className)}>
       {data.nodes.length > 0 ? (
         <ResponsiveContainer width="100%" height="100%" className="sankey-container">
           <Sankey
             data={data}
             node={CustomNode}
             link={CustomLink}
-            nodePadding={20}
-            margin={{ top: 10, right: 140, bottom: 10, left: 140 }}
+            nodePadding={40}
+            nodeWidth={20}
+            margin={{ top: 20, right: 160, bottom: 20, left: 160 }}
           >
             <Tooltip
               formatter={(value: number) => formatValue(value)}
-              labelFormatter={(name: string) => name}
+              labelFormatter={(name: string) => name.split('\n')[0]}
               wrapperStyle={{
                 background: 'rgba(255, 255, 255, 0.95)',
                 border: '1px solid #f0f0f0',
