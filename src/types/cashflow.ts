@@ -10,7 +10,7 @@ export interface SankeyNode {
   name: string;
   value?: number;
   itemId?: string;
-  category?: 'income' | 'expense' | 'balance';
+  category: 'income' | 'expense' | 'balance';
 }
 
 export interface SankeyLink {

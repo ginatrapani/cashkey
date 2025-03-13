@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -94,7 +93,18 @@
   stroke-opacity: 0.8;
 }
 
-/* ReactFlow customizations */
+.sankey-node-label {
+  font-size: 12px;
+  font-weight: 500;
+  fill: #4b5563;
+}
+
+.sankey-node-percentage {
+  font-size: 11px;
+  font-weight: 400;
+  fill: #6b7280;
+}
+
 .recharts-wrapper {
   @apply mx-auto;
 }

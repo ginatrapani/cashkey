@@ -11,10 +11,10 @@ interface SankeyDiagramProps {
 }
 
 const COLORS = {
-  income: 'rgb(52, 199, 89)',
-  expense: 'rgb(255, 59, 48)',
-  surplus: 'rgb(0, 122, 255)',
-  deficit: 'rgb(255, 149, 0)',
+  income: '#3498db',   // Blue
+  expense: '#2ecc71',  // Green
+  surplus: '#9b59b6',  // Purple
+  deficit: '#e74c3c',  // Red
 };
 
 const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, className }) => {
@@ -29,95 +29,83 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
     const balanceLabel = balance >= 0 ? 'Surplus' : 'Deficit';
     const balanceColor = balance >= 0 ? COLORS.surplus : COLORS.deficit;
 
+    // Create a middle "Budget" node
+    const middleNodeIndex = incomes.length;
+    
     // Create nodes
     const nodes = [
-      // Income nodes
-      ...incomes.map((income, index) => ({
-        name: income.name,
-        value: income.amount,
-        itemId: income.id,
-        category: 'income' as const,
-        color: COLORS.income,
-      })),
+      // Income nodes (left side)
+      ...incomes.map((income, index) => {
+        const percentage = ((income.amount / totalIncome) * 100).toFixed(2);
+        return {
+          name: income.name,
+          displayName: `${income.name}\n${percentage}%`,
+          value: income.amount,
+          percentage: percentage,
+          itemId: income.id,
+          category: 'income' as const,
+          color: COLORS.income,
+        };
+      }),
       
-      // Expense nodes
-      ...expenses.map((expense, index) => ({
-        name: expense.name,
-        value: expense.amount,
-        itemId: expense.id,
-        category: 'expense' as const,
-        color: COLORS.expense,
-      })),
-      
-      // Balance node
+      // Middle "Budget" node
       {
+        name: 'Budget',
+        displayName: 'Budget',
+        value: totalIncome,
+        category: 'balance' as const,
+        color: '#f1c40f', // Yellow
+      },
+      
+      // Expense nodes (right side)
+      ...expenses.map((expense, index) => {
+        const percentage = ((expense.amount / totalExpense) * 100).toFixed(2);
+        return {
+          name: expense.name,
+          displayName: `${expense.name}\n${percentage}%`,
+          value: expense.amount,
+          percentage: percentage,
+          itemId: expense.id,
+          category: 'expense' as const,
+          color: COLORS.expense,
+        };
+      }),
+      
+      // Balance node (if needed)
+      ...(balance !== 0 ? [{
         name: balanceLabel,
+        displayName: `${balanceLabel}\n${((Math.abs(balance) / totalIncome) * 100).toFixed(2)}%`,
         value: Math.abs(balance),
+        percentage: ((Math.abs(balance) / totalIncome) * 100).toFixed(2),
         category: 'balance' as const,
         color: balanceColor,
-      }
+      }] : [])
     ];
-
-    // Calculate source/target indices
-    const totalNode = incomes.length;
-    const expenseStartIndex = incomes.length;
-    const balanceIndex = incomes.length + expenses.length;
 
     // Create links
     const links = [
-      // Income to expense links
-      ...incomes.flatMap((income, incomeIndex) => 
-        expenses.map((expense, expenseIndex) => {
-          // Distribute income proportionally to expenses
-          const incomeProportion = income.amount / totalIncome;
-          const value = Math.min(
-            income.amount, 
-            expense.amount * incomeProportion
-          );
-          
-          return {
-            source: incomeIndex,
-            target: expenseStartIndex + expenseIndex,
-            value: value,
-          };
-        })
-      ),
-    ];
-
-    // Add balance link (from each income source to balance)
-    if (balance !== 0) {
-      incomes.forEach((income, index) => {
-        const remainingIncome = income.amount - 
-          links.filter(link => link.source === index)
-            .reduce((sum, link) => sum + link.value, 0);
-        
-        if (remainingIncome > 0) {
-          links.push({
-            source: index,
-            target: balanceIndex,
-            value: remainingIncome,
-          });
-        }
-      });
+      // Income to Budget links
+      ...incomes.map((income, incomeIndex) => ({
+        source: incomeIndex,
+        target: middleNodeIndex,
+        value: income.amount,
+      })),
       
-      // If expenses exceed income, add links from expenses to deficit
-      if (balance < 0) {
-        const expensesNotCovered = Math.abs(balance);
-        expenses.forEach((expense, index) => {
-          const expenseIndex = expenseStartIndex + index;
-          const incomeToExpense = links.filter(link => link.target === expenseIndex)
-            .reduce((sum, link) => sum + link.value, 0);
-          
-          const notCovered = expense.amount - incomeToExpense;
-          if (notCovered > 0) {
-            links.push({
-              source: expenseIndex,
-              target: balanceIndex,
-              value: notCovered,
-            });
-          }
-        });
-      }
+      // Budget to Expense links
+      ...expenses.map((expense, expenseIndex) => ({
+        source: middleNodeIndex,
+        target: middleNodeIndex + 1 + expenseIndex,
+        value: expense.amount,
+      })),
+    ];
+    
+    // Add balance link if needed
+    if (balance !== 0) {
+      links.push({
+        source: middleNodeIndex,
+        target: middleNodeIndex + 1 + expenses.length,
+        value: Math.abs(balance),
+      });
     }
 
     return { nodes, links };
@@ -134,6 +122,27 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
   const CustomNode = ({ x, y, width, height, index, payload }: any) => {
     const node = data.nodes[index];
     const nodeColor = node.color;
+    const isLeftSide = node.category === 'income';
+    const isRightSide = node.category === 'expense' || 
+                        (node.category === 'balance' && node.name !== 'Budget');
+    const isMiddle = node.name === 'Budget';
+    
+    // Adjust x position for labels
+    const labelX = isLeftSide 
+      ? x - 5 
+      : isRightSide 
+        ? x + width + 5 
+        : x + width / 2;
+    
+    // Text alignment based on node position
+    const textAnchor = isLeftSide 
+      ? 'end' 
+      : isRightSide 
+        ? 'start' 
+        : 'middle';
+
+    // Don't show percentage for Budget node
+    const showPercentage = !isMiddle;
     
     return (
       <g>
@@ -149,21 +158,31 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
           ry={4}
         />
         <text
-          x={node.category === 'income' ? x - 5 : x + width + 5}
-          y={y + height / 2}
-          textAnchor={node.category === 'income' ? 'end' : 'start'}
+          x={labelX}
+          y={y + height / 2 - (showPercentage ? 8 : 0)}
+          textAnchor={textAnchor}
           dominantBaseline="middle"
-          className="text-xs font-medium fill-foreground"
+          className="sankey-node-label"
         >
           {node.name}
         </text>
+        {showPercentage && (
+          <text
+            x={labelX}
+            y={y + height / 2 + 14}
+            textAnchor={textAnchor}
+            dominantBaseline="middle"
+            className="sankey-node-percentage"
+          >
+            {node.percentage}%
+          </text>
+        )}
       </g>
     );
   };
 
   const CustomLink = (props: any) => {
     const { sourceX, sourceY, sourceControlX, targetX, targetY, targetControlX, linkWidth, index } = props;
-    const isBalance = data.links[index].target === data.nodes.length - 1;
     
     const gradientId = `linkGradient${index}`;
     const sourceNode = data.nodes[data.links[index].source];
@@ -204,7 +223,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
             node={CustomNode}
             link={CustomLink}
             nodePadding={20}
-            margin={{ top: 10, right: 140, bottom: 10, left: 140 }}
+            margin={{ top: 10, right: 160, bottom: 10, left: 160 }}
           >
             <Tooltip
               formatter={(value: number) => formatValue(value)}
