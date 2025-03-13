@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                income: '#34C759',
+                expense: '#FF3B30',
+                surplus: '#007AFF',
+                deficit: '#FF9500',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -69,6 +74,18 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			keyframes: {
+                fadeIn: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+                slideUp: {
+                    '0%': { transform: 'translateY(10px)', opacity: '0' },
+                    '100%': { transform: 'translateY(0)', opacity: '1' },
+                },
+                pulse: {
+                    '0%, 100%': { opacity: '1' },
+                    '50%': { opacity: '0.5' },
+                },
 				'accordion-down': {
 					from: {
 						height: '0'
@@ -87,9 +104,19 @@ export default {
 				}
 			},
 			animation: {
+                'fade-in': 'fadeIn 0.5s ease-out',
+                'slide-up': 'slideUp 0.5s ease-out',
+                'pulse-slow': 'pulse 3s ease-in-out infinite',
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+			},
+            boxShadow: {
+                'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                'soft': '0 4px 20px rgba(0, 0, 0, 0.05)'
+            },
+            backdropBlur: {
+                'xs': '2px',
+            }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
