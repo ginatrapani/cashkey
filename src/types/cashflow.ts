@@ -10,15 +10,13 @@ export interface SankeyNode {
   name: string;
   value?: number;
   itemId?: string;
-  category?: 'income' | 'expense' | 'balance' | 'budget';
-  color?: string;
+  category?: 'income' | 'expense' | 'balance';
 }
 
 export interface SankeyLink {
   source: number;
   target: number;
   value: number;
-  category?: 'income' | 'expense' | 'surplus' | 'deficit';
 }
 
 export interface SankeyData {
