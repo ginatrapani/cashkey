@@ -21,6 +21,17 @@ const SankeyLink: React.FC<SankeyLinkProps> = (props) => {
   const sourceNode = data.nodes[data.links[index].source];
   const targetNode = data.nodes[data.links[index].target];
   
+  // Apply vertical adjustments for links
+  const isSourceMiddle = sourceNode.name === 'Budget';
+  const isTargetMiddle = targetNode.name === 'Budget';
+  
+  // Adjust vertical positioning - we slightly shift non-budget nodes up by 5px
+  const sourceYAdjust = isSourceMiddle ? 0 : -5;
+  const targetYAdjust = isTargetMiddle ? 0 : -5;
+  
+  const adjustedSourceY = sourceY + sourceYAdjust;
+  const adjustedTargetY = targetY + targetYAdjust;
+  
   return (
     <g>
       <defs>
@@ -31,10 +42,10 @@ const SankeyLink: React.FC<SankeyLinkProps> = (props) => {
       </defs>
       <path
         d={`
-          M${sourceX},${sourceY}
-          C${sourceControlX},${sourceY} ${targetControlX},${targetY} ${targetX},${targetY}
-          L${targetX},${targetY + linkWidth}
-          C${targetControlX},${targetY + linkWidth} ${sourceControlX},${sourceY + linkWidth} ${sourceX},${sourceY + linkWidth}
+          M${sourceX},${adjustedSourceY}
+          C${sourceControlX},${adjustedSourceY} ${targetControlX},${adjustedTargetY} ${targetX},${adjustedTargetY}
+          L${targetX},${adjustedTargetY + linkWidth}
+          C${targetControlX},${adjustedTargetY + linkWidth} ${sourceControlX},${adjustedSourceY + linkWidth} ${sourceX},${adjustedSourceY + linkWidth}
           Z
         `}
         fill={`url(#${gradientId})`}
