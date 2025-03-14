@@ -1,4 +1,6 @@
+
 import * as React from "react"
+import { debounce } from "lodash"
 
 const MOBILE_BREAKPOINT = 768
 
@@ -7,12 +9,22 @@ export function useIsMobile() {
 
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    const onChange = () => {
+    const handleResize = debounce(() => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    }
-    mql.addEventListener("change", onChange)
+    }, 100)
+
+    // Initial check
     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    return () => mql.removeEventListener("change", onChange)
+    
+    // Add listeners for changes
+    mql.addEventListener("change", handleResize)
+    window.addEventListener("resize", handleResize)
+    
+    return () => {
+      mql.removeEventListener("change", handleResize)
+      window.removeEventListener("resize", handleResize)
+      handleResize.cancel()
+    }
   }, [])
 
   return !!isMobile
