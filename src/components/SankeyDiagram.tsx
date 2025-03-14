@@ -26,11 +26,11 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
             data={data}
             node={(nodeProps) => <SankeyNode {...nodeProps} data={data} />}
             link={(linkProps) => <SankeyLink {...linkProps} data={data} />}
-            nodePadding={40}
-            nodeWidth={30}
-            linkCurvature={0.5}
-            iterations={64}
-            margin={{ top: 20, right: 160, bottom: 20, left: 160 }}
+            nodePadding={50}
+            nodeWidth={20}
+            linkCurvature={0.4}
+            iterations={32}
+            margin={{ top: 20, right: 180, bottom: 20, left: 180 }}
           >
             <Tooltip
               formatter={(value: number) => formatCurrencyValue(value)}
