@@ -7,6 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Plus, X, DollarSign } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { v4 as uuidv4 } from 'uuid';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
 
 interface CashflowFormProps {
   incomes: CashflowItem[];
@@ -25,14 +32,21 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
 }) => {
   const [newIncomeName, setNewIncomeName] = useState('');
   const [newIncomeAmount, setNewIncomeAmount] = useState('');
+  const [newIncomePeriod, setNewIncomePeriod] = useState('annual');
   const [newExpenseName, setNewExpenseName] = useState('');
   const [newExpenseAmount, setNewExpenseAmount] = useState('');
+  const [newExpensePeriod, setNewExpensePeriod] = useState('annual');
   
   const handleAddIncome = () => {
     if (!newIncomeName || !newIncomeAmount) return;
     
-    const amount = parseFloat(newIncomeAmount);
+    let amount = parseFloat(newIncomeAmount);
     if (isNaN(amount) || amount <= 0) return;
+    
+    // Convert monthly amount to annual if needed
+    if (newIncomePeriod === 'monthly') {
+      amount = amount * 12;
+    }
     
     const newIncome: CashflowItem = {
       id: uuidv4(),
@@ -48,8 +62,13 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
   const handleAddExpense = () => {
     if (!newExpenseName || !newExpenseAmount) return;
     
-    const amount = parseFloat(newExpenseAmount);
+    let amount = parseFloat(newExpenseAmount);
     if (isNaN(amount) || amount <= 0) return;
+    
+    // Convert monthly amount to annual if needed
+    if (newExpensePeriod === 'monthly') {
+      amount = amount * 12;
+    }
     
     const newExpense: CashflowItem = {
       id: uuidv4(),
@@ -89,7 +108,7 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
         <CardHeader className="pb-3">
           <CardTitle className="text-xl font-medium text-income flex items-center">
             <span className="inline-block w-3 h-3 rounded-full bg-income mr-2"></span>
-            Income Sources
+            Annual Income
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -101,7 +120,7 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
               >
                 <div className="flex-1 mr-4">
                   <p className="font-medium">{income.name}</p>
-                  <p className="text-muted-foreground">{formatCurrency(income.amount)}</p>
+                  <p className="text-muted-foreground">{formatCurrency(income.amount)}/year</p>
                 </div>
                 <Button 
                   variant="ghost" 
@@ -122,7 +141,7 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
                   onChange={(e) => setNewIncomeName(e.target.value)}
                   className="flex-1"
                 />
-                <div className="relative">
+                <div className="relative flex-shrink-0 w-[120px]">
                   <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Amount"
@@ -131,9 +150,21 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
                     type="number"
                     min="0"
                     step="100"
-                    className="pl-8 w-[120px]"
+                    className="pl-8 w-full"
                   />
                 </div>
+                <Select
+                  value={newIncomePeriod}
+                  onValueChange={setNewIncomePeriod}
+                >
+                  <SelectTrigger className="w-[110px]">
+                    <SelectValue placeholder="Period" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="annual">Annual</SelectItem>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <Button 
                 onClick={handleAddIncome} 
@@ -151,7 +182,7 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
         <CardHeader className="pb-3">
           <CardTitle className="text-xl font-medium text-expense flex items-center">
             <span className="inline-block w-3 h-3 rounded-full bg-expense mr-2"></span>
-            Expenses
+            Annual Expenses
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -163,7 +194,7 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
               >
                 <div className="flex-1 mr-4">
                   <p className="font-medium">{expense.name}</p>
-                  <p className="text-muted-foreground">{formatCurrency(expense.amount)}</p>
+                  <p className="text-muted-foreground">{formatCurrency(expense.amount)}/year</p>
                 </div>
                 <Button 
                   variant="ghost" 
@@ -184,7 +215,7 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
                   onChange={(e) => setNewExpenseName(e.target.value)}
                   className="flex-1"
                 />
-                <div className="relative">
+                <div className="relative flex-shrink-0 w-[120px]">
                   <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Amount"
@@ -193,9 +224,21 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
                     type="number"
                     min="0"
                     step="100"
-                    className="pl-8 w-[120px]"
+                    className="pl-8 w-full"
                   />
                 </div>
+                <Select
+                  value={newExpensePeriod}
+                  onValueChange={setNewExpensePeriod}
+                >
+                  <SelectTrigger className="w-[110px]">
+                    <SelectValue placeholder="Period" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="annual">Annual</SelectItem>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <Button 
                 onClick={handleAddExpense} 
@@ -213,16 +256,16 @@ const CashflowForm: React.FC<CashflowFormProps> = ({
         <CardContent className="pt-6">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Income</p>
+              <p className="text-sm font-medium text-muted-foreground">Total Annual Income</p>
               <p className="text-2xl font-semibold text-income">{formatCurrency(totalIncome)}</p>
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Expenses</p>
+              <p className="text-sm font-medium text-muted-foreground">Total Annual Expenses</p>
               <p className="text-2xl font-semibold text-expense">{formatCurrency(totalExpense)}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">
-                {balance >= 0 ? 'Monthly Surplus' : 'Monthly Deficit'}
+                {balance >= 0 ? 'Annual Surplus' : 'Annual Deficit'}
               </p>
               <p className={cn(
                 "text-2xl font-semibold",
