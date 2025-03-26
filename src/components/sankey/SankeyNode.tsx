@@ -23,11 +23,6 @@ const SankeyNode: React.FC<SankeyNodeProps> = (props) => {
                       (node.category === 'balance' && node.name !== 'Budget');
   const isMiddle = node.name === 'Budget';
   
-  // Apply a more significant vertical offset for better alignment
-  // This aligns all nodes with the Budget node in the middle
-  const verticalOffset = isMiddle ? 0 : -10;
-  const adjustedY = y + verticalOffset;
-  
   // Adjust x position for labels based on device size
   const labelOffset = isMobile ? 3 : 5;
   const labelX = isLeftSide 
@@ -63,7 +58,7 @@ const SankeyNode: React.FC<SankeyNodeProps> = (props) => {
     <g>
       <Rectangle
         x={x}
-        y={adjustedY}
+        y={y}
         width={width}
         height={height}
         fill={nodeColor}
@@ -74,7 +69,7 @@ const SankeyNode: React.FC<SankeyNodeProps> = (props) => {
       />
       <text
         x={labelX}
-        y={adjustedY + height / 2 - (showPercentage ? labelYOffset : 0)}
+        y={y + height / 2 - (showPercentage ? labelYOffset : 0)}
         textAnchor={textAnchor}
         dominantBaseline="middle"
         className={labelClassName}
@@ -84,7 +79,7 @@ const SankeyNode: React.FC<SankeyNodeProps> = (props) => {
       {showPercentage && (
         <text
           x={labelX}
-          y={adjustedY + height / 2 + percentageYOffset}
+          y={y + height / 2 + percentageYOffset}
           textAnchor={textAnchor}
           dominantBaseline="middle"
           className={percentageClassName}
