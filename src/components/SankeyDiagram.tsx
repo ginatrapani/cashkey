@@ -22,12 +22,13 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
   }, [incomes, expenses]);
 
   // Responsive settings based on screen size
-  const nodePadding = isMobile ? 30 : 50;
+  const nodePadding = isMobile ? 50 : 70; // Increased padding to reduce vertical squishing
   const nodeWidth = isMobile ? 15 : 20;
   const margin = isMobile 
-    ? { top: 10, right: 40, bottom: 10, left: 40 } 
-    : { top: 20, right: 180, bottom: 20, left: 180 };
-  const height = isMobile ? 300 : 400;
+    ? { top: 20, right: 40, bottom: 20, left: 40 } 
+    : { top: 30, right: 180, bottom: 30, left: 180 };
+  const height = isMobile ? 350 : 450; // Increased height to give more vertical space
+  const iterations = 64; // More iterations for better positioning
 
   return (
     <div className={cn("w-full mt-6", className)} style={{ height }}>
@@ -39,8 +40,8 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
             link={(linkProps) => <SankeyLink {...linkProps} data={data} />}
             nodePadding={nodePadding}
             nodeWidth={nodeWidth}
-            linkCurvature={isMobile ? 0.3 : 0.4}
-            iterations={32}
+            linkCurvature={isMobile ? 0.5 : 0.6} // Adjusted for smoother curves
+            iterations={iterations}
             margin={margin}
           >
             <Tooltip

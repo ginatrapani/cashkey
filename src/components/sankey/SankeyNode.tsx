@@ -23,9 +23,9 @@ const SankeyNode: React.FC<SankeyNodeProps> = (props) => {
                       (node.category === 'balance' && node.name !== 'Budget');
   const isMiddle = node.name === 'Budget';
   
-  // Apply a slight vertical offset for better alignment with Budget column
-  // This shifts the income and expense nodes up slightly to better align with middle budget node
-  const verticalOffset = isMiddle ? 0 : -5;
+  // Apply a more significant vertical offset for better alignment
+  // This aligns all nodes with the Budget node in the middle
+  const verticalOffset = isMiddle ? 0 : -10;
   const adjustedY = y + verticalOffset;
   
   // Adjust x position for labels based on device size

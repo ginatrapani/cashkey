@@ -21,13 +21,13 @@ const SankeyLink: React.FC<SankeyLinkProps> = (props) => {
   const sourceNode = data.nodes[data.links[index].source];
   const targetNode = data.nodes[data.links[index].target];
   
-  // Apply vertical adjustments for links
+  // Apply more significant vertical adjustments for links
   const isSourceMiddle = sourceNode.name === 'Budget';
   const isTargetMiddle = targetNode.name === 'Budget';
   
-  // Adjust vertical positioning - we slightly shift non-budget nodes up by 5px
-  const sourceYAdjust = isSourceMiddle ? 0 : -5;
-  const targetYAdjust = isTargetMiddle ? 0 : -5;
+  // Match the -10px offset from SankeyNode component
+  const sourceYAdjust = isSourceMiddle ? 0 : -10;
+  const targetYAdjust = isTargetMiddle ? 0 : -10;
   
   const adjustedSourceY = sourceY + sourceYAdjust;
   const adjustedTargetY = targetY + targetYAdjust;
