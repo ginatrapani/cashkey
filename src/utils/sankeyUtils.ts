@@ -1,4 +1,3 @@
-
 import { CashflowItem } from '../types/cashflow';
 
 // Softer, more neutral color palette with accent colors
@@ -61,7 +60,8 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
     
     // Expense nodes (right side)
     ...expenses.map((expense) => {
-      const percentage = ((expense.amount / totalExpense) * 100).toFixed(1);
+      // Calculate expense percentage relative to total income instead of total expenses
+      const percentage = ((expense.amount / totalIncome) * 100).toFixed(1);
       return {
         name: expense.name,
         displayName: `${expense.name}\n${percentage}%`,
