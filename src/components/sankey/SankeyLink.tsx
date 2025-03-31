@@ -21,10 +21,7 @@ const SankeyLink: React.FC<SankeyLinkProps> = (props) => {
   const sourceNode = data.nodes[data.links[index].source];
   const targetNode = data.nodes[data.links[index].target];
   
-  // Apply a vertical offset to better align with the budget column
-  const verticalOffset = -10;
-  const adjustedSourceY = sourceY + (sourceNode.category === 'income' ? verticalOffset : 0);
-  const adjustedTargetY = targetY + (targetNode.category === 'expense' ? verticalOffset : 0);
+  // Remove the vertical offset adjustment that was causing misalignment
   
   return (
     <g>
@@ -36,10 +33,10 @@ const SankeyLink: React.FC<SankeyLinkProps> = (props) => {
       </defs>
       <path
         d={`
-          M${sourceX},${adjustedSourceY}
-          C${sourceControlX},${adjustedSourceY} ${targetControlX},${adjustedTargetY} ${targetX},${adjustedTargetY}
-          L${targetX},${adjustedTargetY + linkWidth}
-          C${targetControlX},${adjustedTargetY + linkWidth} ${sourceControlX},${adjustedSourceY + linkWidth} ${sourceX},${adjustedSourceY + linkWidth}
+          M${sourceX},${sourceY}
+          C${sourceControlX},${sourceY} ${targetControlX},${targetY} ${targetX},${targetY}
+          L${targetX},${targetY + linkWidth}
+          C${targetControlX},${targetY + linkWidth} ${sourceControlX},${sourceY + linkWidth} ${sourceX},${sourceY + linkWidth}
           Z
         `}
         fill={`url(#${gradientId})`}
