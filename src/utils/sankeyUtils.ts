@@ -38,7 +38,7 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
   const nodes = [
     // Income nodes (left side)
     ...sortedIncomes.map((income) => {
-      const percentage = ((income.amount / totalBudget) * 100).toFixed(1);
+      const percentage = Math.round((income.amount / totalBudget) * 100);
       return {
         name: income.name,
         displayName: `${income.name}\n${percentage}%`,
@@ -53,9 +53,9 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
     // Add deficit node on income side if expenses exceed income
     ...(hasDeficit ? [{
       name: 'Deficit',
-      displayName: `Deficit\n${((Math.abs(balance) / totalBudget) * 100).toFixed(1)}%`,
+      displayName: `Deficit\n${Math.round((Math.abs(balance) / totalBudget) * 100)}%`,
       value: Math.abs(balance),
-      percentage: ((Math.abs(balance) / totalBudget) * 100).toFixed(1),
+      percentage: Math.round((Math.abs(balance) / totalBudget) * 100),
       category: 'income' as const,
       color: COLORS.deficit,
     }] : []),
@@ -71,7 +71,7 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
     
     // Expense nodes (right side)
     ...sortedExpenses.map((expense) => {
-      const percentage = ((expense.amount / totalBudget) * 100).toFixed(1);
+      const percentage = Math.round((expense.amount / totalBudget) * 100);
       return {
         name: expense.name,
         displayName: `${expense.name}\n${percentage}%`,
@@ -86,9 +86,9 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
     // Add surplus node on expense side if income exceeds expenses
     ...(!hasDeficit && balance > 0 ? [{
       name: 'Surplus',
-      displayName: `Surplus\n${((balance / totalBudget) * 100).toFixed(1)}%`,
+      displayName: `Surplus\n${Math.round((balance / totalBudget) * 100)}%`,
       value: balance,
-      percentage: ((balance / totalBudget) * 100).toFixed(1),
+      percentage: Math.round((balance / totalBudget) * 100),
       category: 'balance' as const,
       color: COLORS.surplus,
     }] : [])
