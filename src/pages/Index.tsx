@@ -72,17 +72,17 @@ const Index = () => {
       setIncomes(savedState.incomes);
       setExpenses(savedState.expenses);
     } else {
-      // Sample data for first-time users
+      // Sample data for first-time users with realistic U.S. median values
       setIncomes([
-        { id: uuidv4(), name: 'Salary', amount: 5000 },
-        { id: uuidv4(), name: 'Side Hustle', amount: 1000 },
+        { id: uuidv4(), name: 'Salary', amount: 54132 }, // Median U.S. annual salary
+        { id: uuidv4(), name: 'Side Hustle', amount: 6000 }, // As specified
       ]);
       
       setExpenses([
-        { id: uuidv4(), name: 'Housing', amount: 1800 },
-        { id: uuidv4(), name: 'Food', amount: 600 },
-        { id: uuidv4(), name: 'Transportation', amount: 400 },
-        { id: uuidv4(), name: 'Utilities', amount: 300 },
+        { id: uuidv4(), name: 'Rent', amount: 18792 }, // Median U.S. rent for 2-bedroom ($1,566/month)
+        { id: uuidv4(), name: 'Food', amount: 8172 }, // Median U.S. food expense ($681/month)
+        { id: uuidv4(), name: 'Transportation', amount: 5676 }, // Median U.S. car lease payment ($473/month)
+        { id: uuidv4(), name: 'Utilities', amount: 4800 }, // Keeping this from original
       ]);
     }
   }, []);
