@@ -1,11 +1,13 @@
 
 import { CashflowItem } from '../types/cashflow';
 
+// Softer, more neutral color palette with accent colors
 export const COLORS = {
-  income: '#3498db',   // Blue
-  expense: '#2ecc71',  // Green
-  surplus: '#9b59b6',  // Purple
-  deficit: '#e74c3c',  // Red
+  income: '#8E9EF0',   // Soft blue
+  expense: '#9ADCB9',  // Soft green
+  surplus: '#9b87f5',  // Soft purple
+  deficit: '#F7A097',  // Soft red-orange
+  budget: '#F1C40F',   // Gold for budget node
 };
 
 export const formatCurrencyValue = (value: number): string => {
@@ -54,7 +56,7 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
       displayName: 'Budget',
       value: totalIncome,
       category: 'balance' as const,
-      color: '#f1c40f', // Yellow
+      color: COLORS.budget,
     },
     
     // Expense nodes (right side)

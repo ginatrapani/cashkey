@@ -1,69 +1,56 @@
-# Welcome to your Lovable project
 
-## Project info
+# Cashkey - Annual Cashflow Visualizer
 
-**URL**: https://lovable.dev/projects/f8883311-9b36-4359-bf27-af808b62c03a
+Cashkey is a web application that helps users visualize their annual cashflow through a Sankey diagram. The app makes it easy to track income sources and expenses, see the balance, and share the visualization with others.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- Interactive Sankey diagram showing income and expense flows
+- Displays each income and expense as a percentage of the total
+- Shows budget surplus or deficit
+- Add multiple income sources and expenses
+- Enter amounts as either monthly or annual values
+- Dark mode, light mode, and system preference support
+- Responsive design works on desktop, tablet, and mobile devices
+- All data is stored in the URL for easy sharing and privacy
+- No server-side processing or storage of user data
 
-**Use Lovable**
+## Technologies Used
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f8883311-9b36-4359-bf27-af808b62c03a) and start prompting.
+- React.js for the user interface
+- Recharts and Sankey diagrams for visualization
+- Tailwind CSS for styling
+- Shadcn/UI for UI components
+- URL-based data persistence
 
-Changes made via Lovable will be committed automatically to this repo.
+## How to Use
 
-**Use your preferred IDE**
+1. Add your income sources with their amounts
+2. Add your expenses with their amounts
+3. View the Sankey diagram to visualize your cashflow
+4. Share your cashflow diagram using the "Share" button
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Development
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
 
-Follow these steps:
+- Node.js 16+
+- npm or yarn
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Getting Started
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/cashkey.git
+cd cashkey
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## License
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/f8883311-9b36-4359-bf27-af808b62c03a) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+This project is licensed under the MIT License - see the LICENSE file for details.
