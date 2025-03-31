@@ -1,12 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { CashflowItem, CashflowState } from '@/types/cashflow';
 import CashflowForm from '@/components/CashflowForm';
 import SankeyDiagram from '@/components/SankeyDiagram';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { getStateFromUrl, updateUrlWithState } from '@/utils/urlUtils';
 import { Button } from '@/components/ui/button';
-import { Share2, Info } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,27 +15,27 @@ const Index = () => {
   // Update the document title and metadata
   useEffect(() => {
     // Set the page title
-    document.title = 'Cashkey | Visualize your annual cashflow';
+    document.title = 'Cashkey | Visualize your annual cash flow';
     
     // Update meta tags for social sharing
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Visualize your annual cashflow');
+      metaDescription.setAttribute('content', 'Visualize your annual cash flow');
     } else {
       const newMeta = document.createElement('meta');
       newMeta.name = 'description';
-      newMeta.content = 'Visualize your annual cashflow';
+      newMeta.content = 'Visualize your annual cash flow';
       document.head.appendChild(newMeta);
     }
     
     // Add Open Graph meta tags for social sharing
     const ogTags = [
       { property: 'og:title', content: 'Cashkey' },
-      { property: 'og:description', content: 'Visualize your annual cashflow' },
+      { property: 'og:description', content: 'Visualize your annual cash flow' },
       { property: 'og:type', content: 'website' },
       { property: 'og:url', content: window.location.href },
       { property: 'twitter:title', content: 'Cashkey' },
-      { property: 'twitter:description', content: 'Visualize your annual cashflow' },
+      { property: 'twitter:description', content: 'Visualize your annual cash flow' },
     ];
     
     ogTags.forEach(tag => {
@@ -108,7 +106,15 @@ const Index = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
         <header className="mb-8 text-center relative">
           <div className="absolute right-0 top-0">
-            <ThemeSwitcher />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleShare}
+              className="rounded-full h-9 w-9"
+              title="Share your cash flow"
+            >
+              <Share2 className="h-4 w-4" />
+            </Button>
           </div>
           
           <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/5 text-primary/80 text-xs font-medium mb-3 animate-fade-in">
@@ -118,7 +124,7 @@ const Index = () => {
             Cashkey
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up [animation-delay:100ms]">
-            Visualize your annual cashflow
+            Visualize your annual cash flow
           </p>
         </header>
         
@@ -140,11 +146,10 @@ const Index = () => {
                 className="flex items-center gap-2"
               >
                 <Share2 className="h-4 w-4" />
-                Share Cash Flow Diagram
+                Share Cash Flow
               </Button>
               
               <div className="flex items-center text-sm text-muted-foreground">
-                <Info className="h-4 w-4 mr-1" />
                 Your data is stored only in the URL
               </div>
             </div>

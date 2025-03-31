@@ -1,7 +1,7 @@
 
-# Cashkey - Annual Cashflow Visualizer
+# Cashkey - Aannual Cash Flow Visualizer
 
-Cashkey is a web application that helps users visualize their annual cashflow through a Sankey diagram. The app makes it easy to track income sources and expenses, see the balance, and share the visualization with others.
+Cashkey is a web application that helps users visualize their annual cash flow through a Sankey diagram. The app makes it easy to track income sources and expenses, see the balance, and share the visualization with others.
 
 ## Features
 
