@@ -1,9 +1,9 @@
 
 import React, { useMemo } from 'react';
-import { Sankey, Tooltip, ResponsiveContainer } from 'recharts';
+import { Sankey, ResponsiveContainer } from 'recharts';
 import { CashflowItem } from '../types/cashflow';
 import { cn } from '@/lib/utils';
-import { processSankeyData, formatCurrencyValue } from '../utils/sankeyUtils';
+import { processSankeyData } from '../utils/sankeyUtils';
 import SankeyNode from './sankey/SankeyNode';
 import SankeyLink from './sankey/SankeyLink';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -42,19 +42,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
             linkCurvature={isMobile ? 0.3 : 0.5}
             iterations={64}
             margin={margin}
-          >
-            <Tooltip
-              formatter={(value: number) => formatCurrencyValue(value)}
-              labelFormatter={(name: string) => name}
-              wrapperStyle={{
-                background: 'rgba(255, 255, 255, 0.95)',
-                border: '1px solid #f0f0f0',
-                borderRadius: '8px',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                padding: '8px 12px',
-              }}
-            />
-          </Sankey>
+          />
         </ResponsiveContainer>
       ) : (
         <div className="flex items-center justify-center h-full bg-secondary/30 rounded-xl">
