@@ -4,7 +4,7 @@ import CashflowForm from '@/components/CashflowForm';
 import SankeyDiagram from '@/components/SankeyDiagram';
 import { getStateFromUrl, updateUrlWithState } from '@/utils/urlUtils';
 import { Button } from '@/components/ui/button';
-import { Share2 } from 'lucide-react';
+import { Share2, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -150,6 +150,7 @@ const Index = () => {
               </Button>
               
               <div className="flex items-center text-sm text-muted-foreground">
+                <Info className="h-4 w-4 mr-1" />
                 Your data is stored only in the URL
               </div>
             </div>
