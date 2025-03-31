@@ -27,16 +27,17 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
   const balance = totalIncome - totalExpense;
   const balanceLabel = balance >= 0 ? 'Surplus' : 'Deficit';
   const balanceColor = balance >= 0 ? COLORS.surplus : COLORS.deficit;
+
+  // Sort expenses by amount in descending order to maintain consistent ordering
+  const sortedExpenses = [...expenses].sort((a, b) => b.amount - a.amount);
   
-  // Calculate node heights proportionally
-  const getNodeHeight = (amount: number, total: number) => {
-    return Math.max(30, (amount / total) * 200); // Min height of 30px
-  };
+  // Sort incomes by amount in descending order
+  const sortedIncomes = [...incomes].sort((a, b) => b.amount - a.amount);
 
   // Create nodes
   const nodes = [
     // Income nodes (left side)
-    ...incomes.map((income) => {
+    ...sortedIncomes.map((income) => {
       const percentage = ((income.amount / totalIncome) * 100).toFixed(1);
       return {
         name: income.name,
@@ -58,9 +59,18 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
       color: COLORS.budget,
     },
     
-    // Expense nodes (right side)
-    ...expenses.map((expense) => {
-      // Calculate expense percentage relative to total income instead of total expenses
+    // Expense nodes (right side) - including balance node if needed
+    ...(balance !== 0 ? [{
+      name: balanceLabel,
+      displayName: `${balanceLabel}\n${((Math.abs(balance) / totalIncome) * 100).toFixed(1)}%`,
+      value: Math.abs(balance),
+      percentage: ((Math.abs(balance) / totalIncome) * 100).toFixed(1),
+      category: 'balance' as const,
+      color: balanceColor,
+    }] : []),
+    
+    // Regular expense nodes after balance node
+    ...sortedExpenses.map((expense) => {
       const percentage = ((expense.amount / totalIncome) * 100).toFixed(1);
       return {
         name: expense.name,
@@ -72,43 +82,35 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
         color: COLORS.expense,
       };
     }),
-    
-    // Balance node (if needed)
-    ...(balance !== 0 ? [{
-      name: balanceLabel,
-      displayName: `${balanceLabel}\n${((Math.abs(balance) / totalIncome) * 100).toFixed(1)}%`,
-      value: Math.abs(balance),
-      percentage: ((Math.abs(balance) / totalIncome) * 100).toFixed(1),
-      category: 'balance' as const,
-      color: balanceColor,
-    }] : [])
   ];
 
-  // Create links
+  // Create links with consistent ordering
   const links = [
     // Income to Budget links
-    ...incomes.map((income, incomeIndex) => ({
-      source: incomeIndex,
-      target: incomes.length, // Index of Budget node
+    ...sortedIncomes.map((income, index) => ({
+      source: index,
+      target: sortedIncomes.length, // Index of Budget node
       value: income.amount,
     })),
-    
-    // Budget to Expense links
-    ...expenses.map((expense, expenseIndex) => ({
-      source: incomes.length, // Index of Budget node
-      target: incomes.length + 1 + expenseIndex,
-      value: expense.amount,
-    })),
   ];
-  
-  // Add balance link if needed
+
+  // Add balance link first if it exists
   if (balance !== 0) {
     links.push({
-      source: incomes.length, // Index of Budget node
-      target: incomes.length + 1 + expenses.length, // Index of Balance node
+      source: sortedIncomes.length, // Index of Budget node
+      target: sortedIncomes.length + 1, // Index of Balance node
       value: Math.abs(balance),
     });
   }
+
+  // Add expense links after balance
+  sortedExpenses.forEach((expense, index) => {
+    links.push({
+      source: sortedIncomes.length, // Index of Budget node
+      target: sortedIncomes.length + (balance !== 0 ? 1 : 0) + index + 1,
+      value: expense.amount,
+    });
+  });
 
   return { nodes, links };
 };
