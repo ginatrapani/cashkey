@@ -23,6 +23,18 @@ const Footer: React.FC = () => {
       >
         Lovable
       </a>
+      {' '} by {' '}
+      <a 
+        href="https://ginatrapani.org" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        style={{
+          color: '#666',
+          textDecoration: 'underline'
+        }}
+      >
+        Gina Trapani
+      </a>
       .
     </footer>
   );
