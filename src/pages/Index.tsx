@@ -10,59 +10,59 @@ import { Share2, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
-// Update the document title and metadata
-useEffect(() => {
-  // Set the page title
-  document.title = 'Cashkey | Visualize your annual cashflow';
-  
-  // Update meta tags for social sharing
-  const metaDescription = document.querySelector('meta[name="description"]');
-  if (metaDescription) {
-    metaDescription.setAttribute('content', 'Visualize your annual cashflow');
-  } else {
-    const newMeta = document.createElement('meta');
-    newMeta.name = 'description';
-    newMeta.content = 'Visualize your annual cashflow';
-    document.head.appendChild(newMeta);
-  }
-  
-  // Add Open Graph meta tags for social sharing
-  const ogTags = [
-    { property: 'og:title', content: 'Cashkey' },
-    { property: 'og:description', content: 'Visualize your annual cashflow' },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: window.location.href },
-    { property: 'twitter:title', content: 'Cashkey' },
-    { property: 'twitter:description', content: 'Visualize your annual cashflow' },
-  ];
-  
-  ogTags.forEach(tag => {
-    let metaTag = document.querySelector(`meta[property="${tag.property}"]`);
-    if (metaTag) {
-      metaTag.setAttribute('content', tag.content);
-    } else {
-      metaTag = document.createElement('meta');
-      metaTag.setAttribute('property', tag.property);
-      metaTag.setAttribute('content', tag.content);
-      document.head.appendChild(metaTag);
-    }
-  });
-  
-  // Set favicon to money with wings emoji
-  const faviconLink = document.querySelector('link[rel="icon"]');
-  if (faviconLink) {
-    faviconLink.setAttribute('href', 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💸</text></svg>');
-  } else {
-    const newFavicon = document.createElement('link');
-    newFavicon.rel = 'icon';
-    newFavicon.href = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💸</text></svg>';
-    document.head.appendChild(newFavicon);
-  }
-}, []);
-
 const Index = () => {
   const [incomes, setIncomes] = useState<CashflowItem[]>([]);
   const [expenses, setExpenses] = useState<CashflowItem[]>([]);
+  
+  // Update the document title and metadata
+  useEffect(() => {
+    // Set the page title
+    document.title = 'Cashkey | Visualize your annual cashflow';
+    
+    // Update meta tags for social sharing
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Visualize your annual cashflow');
+    } else {
+      const newMeta = document.createElement('meta');
+      newMeta.name = 'description';
+      newMeta.content = 'Visualize your annual cashflow';
+      document.head.appendChild(newMeta);
+    }
+    
+    // Add Open Graph meta tags for social sharing
+    const ogTags = [
+      { property: 'og:title', content: 'Cashkey' },
+      { property: 'og:description', content: 'Visualize your annual cashflow' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: window.location.href },
+      { property: 'twitter:title', content: 'Cashkey' },
+      { property: 'twitter:description', content: 'Visualize your annual cashflow' },
+    ];
+    
+    ogTags.forEach(tag => {
+      let metaTag = document.querySelector(`meta[property="${tag.property}"]`);
+      if (metaTag) {
+        metaTag.setAttribute('content', tag.content);
+      } else {
+        metaTag = document.createElement('meta');
+        metaTag.setAttribute('property', tag.property);
+        metaTag.setAttribute('content', tag.content);
+        document.head.appendChild(metaTag);
+      }
+    });
+    
+    // Set favicon to money with wings emoji
+    const faviconLink = document.querySelector('link[rel="icon"]');
+    if (faviconLink) {
+      faviconLink.setAttribute('href', 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💸</text></svg>');
+    } else {
+      const newFavicon = document.createElement('link');
+      newFavicon.rel = 'icon';
+      newFavicon.href = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💸</text></svg>';
+      document.head.appendChild(newFavicon);
+    }
+  }, []);
   
   // Initialize with sample data if nothing from URL
   useEffect(() => {
