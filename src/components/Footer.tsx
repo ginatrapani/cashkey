@@ -10,8 +10,9 @@ const Footer: React.FC = () => {
       color: '#666',
       marginTop: 'auto'
     }}>
-      Cashkey visualizes annual cash flow in a Sankey diagram. It does not save any data.{' '}
-      An experiment with{' '}
+      Cashkey visualizes annual cash flow in a Sankey diagram.<br />
+      It does use a database, it persists all data in the URL.{' '}
+      <br />An experiment with{' '}
       <a 
         href="https://lovable.dev" 
         target="_blank" 
