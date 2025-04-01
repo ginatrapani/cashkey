@@ -83,7 +83,6 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ expenses, onUpdateExpen
     <Card className="shadow-soft animate-fade-in [animation-delay:100ms]">
       <CardHeader className="pb-3">
         <CardTitle className="text-xl font-medium text-expense flex items-center">
-          <span className="inline-block w-3 h-3 rounded-full bg-expense mr-2"></span>
           Annual Expenses
         </CardTitle>
         <p className="text-xs text-muted-foreground mt-1">Tap an item to edit it.</p>
