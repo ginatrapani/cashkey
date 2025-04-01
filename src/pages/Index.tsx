@@ -117,7 +117,7 @@ const Index = () => {
         </header>
         
         {/* Main content */}
-        <div className="glass-panel md:p-8 animate-fade-in [animation-delay:200ms]">
+        <div className="animate-fade-in [animation-delay:200ms]">
           <div className="flex flex-col space-y-8">
             {/* Sankey diagram visualization */}
             <SankeyDiagram 
