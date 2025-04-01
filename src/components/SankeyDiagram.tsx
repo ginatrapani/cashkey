@@ -178,7 +178,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       .attr('class', 'label')
       .style('font-size', isMobile ? '10px' : '12px')
       .style('fill', '#4b5563')
-      .text((d: any) => d.name);
+      .text((d: any) => d.name === 'Budget' ? '' : d.name);
 
     // Add percentage labels (except for Budget node)
     nodeGroups.filter((d: any) => d.name !== 'Budget')
