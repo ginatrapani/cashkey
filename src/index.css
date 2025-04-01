@@ -60,11 +60,7 @@
 }
 
 /* Custom Classes */
-@layer components {
-  .glass-panel {
-    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-glass rounded-2xl;
-  }
-  
+@layer components {  
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }

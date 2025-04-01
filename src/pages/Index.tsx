@@ -104,7 +104,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
-        <header className="mb-8 text-center">
+        <header className="text-center">
           <h1 className="text-4xl font-bold tracking-tight mb-2 bg-clip-text animate-slide-up">
             Cashkey
           </h1>
@@ -117,7 +117,7 @@ const Index = () => {
         </header>
         
         {/* Main content */}
-        <div className="glass-panel p-6 md:p-8 animate-fade-in [animation-delay:200ms]">
+        <div className="glass-panel md:p-8 animate-fade-in [animation-delay:200ms]">
           <div className="flex flex-col space-y-8">
             {/* Sankey diagram visualization */}
             <SankeyDiagram 
