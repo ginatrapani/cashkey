@@ -86,6 +86,7 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ expenses, onUpdateExpen
           <span className="inline-block w-3 h-3 rounded-full bg-expense mr-2"></span>
           Annual Expenses
         </CardTitle>
+        <p className="text-xs text-muted-foreground mt-1">Tap an item to edit it.</p>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

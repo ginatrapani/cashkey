@@ -86,6 +86,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ incomes, onUpdateIncomes 
           <span className="inline-block w-3 h-3 rounded-full bg-income mr-2"></span>
           Annual Income
         </CardTitle>
+        <p className="text-xs text-muted-foreground mt-1">Tap an item to edit it.</p>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
