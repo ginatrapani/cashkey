@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
         Sankey diagram
       </a>
       .<br />
-      It does not use a database, it persists all data in the URL.{' '}
+      It does not use a database, it stores all data in the URL.{' '}
       <br />An experiment with{' '}
       <a 
         href="https://lovable.dev" 
