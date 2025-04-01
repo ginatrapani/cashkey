@@ -104,28 +104,16 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
-        <header className="mb-8 text-center relative">
-          <div className="absolute right-0 top-0">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleShare}
-              className="rounded-full h-9 w-9"
-              title="Share your cash flow"
-            >
-              <Share2 className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/5 text-primary/80 text-xs font-medium mb-3 animate-fade-in">
-            <span className="mr-1">💸</span> All changes auto-save to URL
-          </div>
+        <header className="mb-8 text-center">
           <h1 className="text-4xl font-bold tracking-tight mb-2 bg-clip-text animate-slide-up">
             Cashkey
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up [animation-delay:100ms]">
             Visualize your annual cash flow
           </p>
+          <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/5 text-primary/80 text-xs font-medium mt-2 animate-fade-in">
+            <span className="mr-1">💸</span> All changes auto-save to URL
+          </div>
         </header>
         
         {/* Main content */}
