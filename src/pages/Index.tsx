@@ -79,17 +79,14 @@ const Index = () => {
       setExpenses([
         { id: uuidv4(), name: '🏡 Housing', amount: 16608 }, // Median U.S. rent for 1-bedroom ($1,384/month)
         { id: uuidv4(), name: '🍔 Food', amount: 8172 }, // Median U.S. food expense ($681/month)
-        { id: uuidv4(), name: '💡 Utilities', amount: 6000 }, // Median U.S. utilities ($500/month)
+        { id: uuidv4(), name: '🏥 Healthcare', amount: 7610 }, // $6,468 Silver plan 1 person + $1,142 out of pocket annually
         { id: uuidv4(), name: '🚙 Transportation', amount: 5676 }, // Median U.S. car lease payment ($473/month)
-        { id: uuidv4(), name: '🛍️ Shopping', amount: 3000 }, // 
-        { id: uuidv4(), name: '🎁 Gifts', amount: 2000 }, // 
-        { id: uuidv4(), name: '🏝️ Vacation', amount: 5000 }, // 
-        { id: uuidv4(), name: '🎓 Education', amount: 5500 }, // 
-        { id: uuidv4(), name: '🏥 Healthcare', amount: 2000 }, // 
-        { id: uuidv4(), name: '💪 Fitness', amount: 2000 }, // 
-        { id: uuidv4(), name: '🎭 Entertainment', amount: 1200 }, // 
-        { id: uuidv4(), name: '👵 Retirement', amount: 1200 }, // 
-      ]);
+        { id: uuidv4(), name: '🎓 Education', amount: 5000 },
+        { id: uuidv4(), name: '🏝️ Vacation', amount: 4940 }, 
+        { id: uuidv4(), name: '💡 Utilities', amount: 4475 },
+        { id: uuidv4(), name: '🛍️ Shopping', amount: 3500 },
+        { id: uuidv4(), name: '🎭 Entertainment', amount: 2250 },
+        ]);
     }
   }, []);
   
