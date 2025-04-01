@@ -10,8 +10,20 @@ const Footer: React.FC = () => {
       color: '#666',
       marginTop: 'auto'
     }}>
-      Cashkey visualizes annual cash flow in a Sankey diagram.<br />
-      It does use a database, it persists all data in the URL.{' '}
+      Cashkey visualizes annual cash flow in a {' '}
+      <a 
+        href="https://en.wikipedia.org/wiki/Sankey_diagram" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        style={{
+          color: '#666',
+          textDecoration: 'underline'
+        }}
+      >
+        Sankey diagram
+      </a>
+      .<br />
+      It does not use a database, it persists all data in the URL.{' '}
       <br />An experiment with{' '}
       <a 
         href="https://lovable.dev" 
