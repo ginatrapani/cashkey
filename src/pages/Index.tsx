@@ -72,15 +72,23 @@ const Index = () => {
     } else {
       // Sample data for first-time users with realistic U.S. median values
       setIncomes([
-        { id: uuidv4(), name: 'Salary', amount: 54132 }, // Median U.S. annual salary
-        { id: uuidv4(), name: 'Side Hustle', amount: 6000 }, // As specified
+        { id: uuidv4(), name: '💵 Paycheck', amount: 54132 }, // Median U.S. annual salary
+        { id: uuidv4(), name: '💰 Side Hustle', amount: 5000 }, // As specified
       ]);
       
       setExpenses([
-        { id: uuidv4(), name: 'Rent', amount: 18792 }, // Median U.S. rent for 2-bedroom ($1,566/month)
-        { id: uuidv4(), name: 'Food', amount: 8172 }, // Median U.S. food expense ($681/month)
-        { id: uuidv4(), name: 'Transportation', amount: 5676 }, // Median U.S. car lease payment ($473/month)
-        { id: uuidv4(), name: 'Utilities', amount: 4800 }, // Keeping this from original
+        { id: uuidv4(), name: '🏡 Housing', amount: 16608 }, // Median U.S. rent for 1-bedroom ($1,384/month)
+        { id: uuidv4(), name: '🍔 Food', amount: 8172 }, // Median U.S. food expense ($681/month)
+        { id: uuidv4(), name: '💡 Utilities', amount: 6000 }, // Median U.S. utilities ($500/month)
+        { id: uuidv4(), name: '🚙 Transportation', amount: 5676 }, // Median U.S. car lease payment ($473/month)
+        { id: uuidv4(), name: '🛍️ Shopping', amount: 3000 }, // 
+        { id: uuidv4(), name: '🎁 Gifts', amount: 2000 }, // 
+        { id: uuidv4(), name: '🏝️ Vacation', amount: 5000 }, // 
+        { id: uuidv4(), name: '🎓 Education', amount: 5500 }, // 
+        { id: uuidv4(), name: '🏥 Healthcare', amount: 2000 }, // 
+        { id: uuidv4(), name: '💪 Fitness', amount: 2000 }, // 
+        { id: uuidv4(), name: '🎭 Entertainment', amount: 1200 }, // 
+        { id: uuidv4(), name: '👵 Retirement', amount: 1200 }, // 
       ]);
     }
   }, []);

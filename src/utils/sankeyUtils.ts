@@ -52,7 +52,7 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
 
     // Add deficit node on income side if expenses exceed income
     ...(hasDeficit ? [{
-      name: 'Deficit',
+      name: '📉 Deficit',
       displayName: `Deficit\n${Math.round((Math.abs(balance) / totalBudget) * 100)}%`,
       value: Math.abs(balance),
       percentage: Math.round((Math.abs(balance) / totalBudget) * 100),
@@ -85,7 +85,7 @@ export const processSankeyData = (incomes: CashflowItem[], expenses: CashflowIte
     
     // Add surplus node on expense side if income exceeds expenses
     ...(!hasDeficit && balance > 0 ? [{
-      name: 'Surplus',
+      name: '📈 Surplus',
       displayName: `Surplus\n${Math.round((balance / totalBudget) * 100)}%`,
       value: balance,
       percentage: Math.round((balance / totalBudget) * 100),
