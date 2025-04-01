@@ -45,18 +45,41 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
     // Set up the Sankey generator
     const sankeyGenerator = sankey()
       .nodeWidth(isMobile ? 15 : 20)
-      .nodePadding(isMobile ? 10 : 30)
+      .nodePadding(isMobile ? 10 : 15)
       .extent([[0, 0], [innerWidth, innerHeight]]);
 
     // Generate the Sankey data
     const sankeyData = sankeyGenerator({
-      nodes: data.nodes.map(node => ({
-        ...node,
-        name: node.name.split('\n')[0],
-        fill: node.color
-      })),
+      nodes: data.nodes.map(node => {
+        const isBudget = node.name === 'Budget';
+        const nodeData: any = {
+          ...node,
+          name: node.name.split('\n')[0],
+          fill: node.color,
+        };
+        
+        // Set minimum height for budget node on desktop
+        if (!isMobile && isBudget) {
+          nodeData.height = Math.max(innerHeight * 0.5, nodeData.height || 0);
+        }
+        
+        return nodeData;
+      }),
       links: data.links
     });
+
+    // Adjust budget node height if needed
+    if (!isMobile) {
+      const budgetNode = sankeyData.nodes.find((n: any) => n.name === 'Budget');
+      if (budgetNode) {
+        const minHeight = innerHeight * 0.5;
+        if (budgetNode.y1 - budgetNode.y0 < minHeight) {
+          const centerY = (budgetNode.y0 + budgetNode.y1) / 2;
+          budgetNode.y0 = centerY - (minHeight / 2);
+          budgetNode.y1 = centerY + (minHeight / 2);
+        }
+      }
+    }
 
     // Create gradients for links
     const defs = svg.append('defs');
