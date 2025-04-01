@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { CashflowItem } from '../../types/cashflow';
 import { Button } from '@/components/ui/button';
@@ -14,6 +13,8 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 interface ExpenseSectionProps {
   expenses: CashflowItem[];
@@ -27,6 +28,7 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({
   const [newExpenseName, setNewExpenseName] = useState('');
   const [newExpenseAmount, setNewExpenseAmount] = useState('');
   const [newExpensePeriod, setNewExpensePeriod] = useState('annual');
+  const isMobile = useIsMobile();
 
   const handleAddExpense = () => {
     if (!newExpenseName || !newExpenseAmount) return;
@@ -90,25 +92,33 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({
                 placeholder="Expense name"
                 value={newExpenseName}
                 onChange={(e) => setNewExpenseName(e.target.value)}
-                className="flex-1"
+                className={cn(
+                  "flex-1",
+                  isMobile && "text-sm"
+                )}
               />
-              <div className="relative flex-shrink-0 w-[120px]">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <div className="relative flex-shrink-0 w-[70px]">
+                <DollarSign className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Amount"
                   value={newExpenseAmount}
                   onChange={(e) => setNewExpenseAmount(e.target.value)}
                   type="number"
                   min="0"
                   step="100"
-                  className="pl-8 w-full"
+                  className={cn(
+                    "pl-6 w-full no-spin",
+                    isMobile && "text-sm"
+                  )}
                 />
               </div>
               <Select
                 value={newExpensePeriod}
                 onValueChange={setNewExpensePeriod}
               >
-                <SelectTrigger className="w-[110px]">
+                <SelectTrigger className={cn(
+                  "w-[90px]",
+                  isMobile && "text-sm"
+                )}>
                   <SelectValue placeholder="Period" />
                 </SelectTrigger>
                 <SelectContent>
