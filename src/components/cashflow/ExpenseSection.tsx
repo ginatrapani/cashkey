@@ -97,8 +97,8 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({
                   isMobile && "text-sm"
                 )}
               />
-              <div className="relative flex-shrink-0 w-[70px]">
-                <DollarSign className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <div className="relative flex-shrink-0 w-[70px] md:w-[100px]">
+                <DollarSign className="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   value={newExpenseAmount}
                   onChange={(e) => setNewExpenseAmount(e.target.value)}
@@ -106,7 +106,7 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({
                   min="0"
                   step="100"
                   className={cn(
-                    "pl-6 w-full no-spin",
+                    "pl-6 md:pl-8 w-full no-spin md:no-spin-none",
                     isMobile && "text-sm"
                   )}
                 />
