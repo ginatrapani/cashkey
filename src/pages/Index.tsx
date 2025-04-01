@@ -114,7 +114,9 @@ const Index = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
         <header className="text-center">
           <h1 className="text-4xl font-bold tracking-tight mb-2 bg-clip-text animate-slide-up">
-            Cashkey
+            <a href="/" className="hover:opacity-80 transition-opacity">
+              Cashkey
+            </a>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up [animation-delay:100ms]">
             Visualize your annual cash flow
