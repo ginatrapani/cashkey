@@ -25,7 +25,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
 
     // Set up dimensions
     const margin = isMobile 
-      ? { top: 20, right: 40, bottom: 20, left: 40 }
+      ? { top: 20, right: 80, bottom: 20, left: 80 }
       : { top: 30, right: 180, bottom: 30, left: 180 };
     const width = svgRef.current.clientWidth;
     const height = isMobile ? 350 : 450;
@@ -201,26 +201,10 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       .attr('class', 'label')
       .style('font-size', isMobile ? '10px' : '12px')
       .style('fill', '#4b5563')
-      .text((d: any) => d.name === 'Budget' ? '' : d.name);
-
-    // Add percentage labels (except for Budget node)
-    nodeGroups.filter((d: any) => d.name !== 'Budget')
-      .append('text')
-      .attr('x', (d: any) => {
-        const isLeftSide = sankeyData.nodes.indexOf(d) < sankeyData.nodes.findIndex((n: any) => n.name === 'Budget');
-        const labelOffset = isMobile ? 3 : 10;
-        return isLeftSide ? d.x0 - labelOffset : d.x1 + labelOffset;
-      })
-      .attr('y', (d: any) => d.y0 + (d.y1 - d.y0) / 2 + (isMobile ? 10 : 14))
-      .attr('dy', '0.35em')
-      .attr('text-anchor', (d: any) => {
-        const isLeftSide = sankeyData.nodes.indexOf(d) < sankeyData.nodes.findIndex((n: any) => n.name === 'Budget');
-        return isLeftSide ? 'end' : 'start';
-      })
-      .attr('class', 'percentage')
-      .style('font-size', isMobile ? '9px' : '11px')
-      .style('fill', '#6b7280')
-      .text((d: any) => `${d.percentage}%`);
+      .text((d: any) => {
+        if (d.name === 'Budget') return '';
+        return `${d.percentage}% ${d.name}`;
+      });
 
   }, [data, incomes, expenses, isMobile]);
 
