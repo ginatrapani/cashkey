@@ -1,11 +1,9 @@
-
 import { CashflowState } from '../types/cashflow';
 
 // A simpler and more URL-friendly encoding scheme
 export const encodeState = (state: CashflowState): string => {
   try {
-    const encoded = btoa(JSON.stringify(state));
-    return encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return encodeURIComponent(JSON.stringify(state));
   } catch (error) {
     console.error('Error encoding state:', error);
     return '';
@@ -16,16 +14,7 @@ export const decodeState = (encoded: string): CashflowState | null => {
   if (!encoded) return null;
   
   try {
-    // Add back padding if needed
-    const padding = encoded.length % 4;
-    const paddedEncoded = padding ? 
-      encoded + '='.repeat(4 - padding) : 
-      encoded;
-    
-    // Replace URL-safe characters
-    const base64 = paddedEncoded.replace(/-/g, '+').replace(/_/g, '/');
-    
-    const decoded = JSON.parse(atob(base64));
+    const decoded = JSON.parse(decodeURIComponent(encoded));
     return {
       incomes: Array.isArray(decoded.incomes) ? decoded.incomes : [],
       expenses: Array.isArray(decoded.expenses) ? decoded.expenses : [],
