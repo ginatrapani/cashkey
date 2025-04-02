@@ -1,7 +1,15 @@
 
-# Cashkey - Aannual Cash Flow Visualizer
+# 💸 Cashkey - Visualize your cash flow
 
-Cashkey is a web application that helps users visualize their annual cash flow through a Sankey diagram. The app makes it easy to track income sources and expenses, see the balance, and share the visualization with others.
+Cashkey is a web application that helps users visualize their annual cash flow with a Sankey diagram. The app makes it easy to track income sources and expenses, see the balance, and share the visualization with others.
+
+## Why
+
+- Money is like water. It flows in and out of our lives.
+- Many people don’t know how their money comes and goes.
+- Sankey diagrams are great for visualizing things that flow. 
+- Sankey diagrams are not a chart type offered natively in spreadsheet apps. Sankey makers (like the awesome [Sankeymatic](https://sankeymatic.com/build/)) still require markup and math that's easy to botch.
+- Cashkey builds a Sankey diagram your cash flow quickly and easily and keeps it private-no data gets sent to a server or stored in a database, it's all in the URL you can choose to bookmark or share.
 
 ## Features
 
@@ -10,15 +18,14 @@ Cashkey is a web application that helps users visualize their annual cash flow t
 - Shows budget surplus or deficit
 - Add multiple income sources and expenses
 - Enter amounts as either monthly or annual values
-- Dark mode, light mode, and system preference support
 - Responsive design works on desktop, tablet, and mobile devices
 - All data is stored in the URL for easy sharing and privacy
 - No server-side processing or storage of user data
 
-## Technologies Used
+## Technologies
 
 - React.js for the user interface
-- Recharts and Sankey diagrams for visualization
+- D3 Sankey diagram for visualization
 - Tailwind CSS for styling
 - Shadcn/UI for UI components
 - URL-based data persistence
@@ -41,7 +48,7 @@ Cashkey is a web application that helps users visualize their annual cash flow t
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cashkey.git
+git clone https://github.com/ginatrapani/cashkey.git
 cd cashkey
 
 # Install dependencies
