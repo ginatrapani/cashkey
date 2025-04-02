@@ -5,7 +5,10 @@ const Footer: React.FC = () => {
     <footer className="footer">
       Money is like water: it flows in and out of our lives. 
       <br />
-      We can direct the flow toward our highest commitments to nourish ourselves and our world.
+      We can direct the flow toward our highest commitments
+      <br />
+      to nourish ourselves and our world.
+      <br />
       &mdash;&nbsp;Lynne&nbsp;Twist, {' '}
       <a 
         href="https://bookshop.org/p/books/the-soul-of-money-transforming-your-relationship-with-money-and-life-lynne-twist/11183499" 
