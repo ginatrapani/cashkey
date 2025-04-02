@@ -88,8 +88,10 @@ const Index = () => {
         { id: uuidv4(), name: '🎓 Education', amount: 5000 },
         { id: uuidv4(), name: '🏝️ Vacation', amount: 4940 }, 
         { id: uuidv4(), name: '💡 Utilities', amount: 4475 },
-        { id: uuidv4(), name: '🛍️ Shopping', amount: 3500 },
-        { id: uuidv4(), name: '🎭 Entertainment', amount: 2250 },
+        { id: uuidv4(), name: '🛍️ Shopping', amount: 3000 },
+        { id: uuidv4(), name: '🎭 Entertainment', amount: 1500 },
+        { id: uuidv4(), name: '🎁 Gifts', amount: 1000 },
+        { id: uuidv4(), name: '🎗️ Charity', amount: 1000 },
         ]);
     }
   }, []);

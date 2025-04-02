@@ -203,7 +203,9 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       .style('fill', '#4b5563')
       .text((d: any) => {
         if (d.name === 'Budget') return '';
-        return `${d.percentage}% ${d.name}`;
+        // Show "< 1%" for percentages under 1%, otherwise show rounded integer
+        const percentage = d.percentage < 1 ? '<1' : Math.round(d.percentage);
+        return `${percentage}% ${d.name}`;
       });
 
   }, [data, incomes, expenses, isMobile]);
