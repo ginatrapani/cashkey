@@ -75,6 +75,16 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ incomes, onUpdateIncomes 
     setEditingIncome(null);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSaveEdit();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      handleCancelEdit();
+    }
+  };
+
   const handleCancelEdit = () => {
     setEditingIncome(null);
   };
@@ -106,11 +116,11 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ incomes, onUpdateIncomes 
                       <Input
                         value={editName}
                         onChange={(e) => setEditName(e.target.value)}
-                        placeholder="Income name"
                         className={cn(
                           "mb-2",
                           isMobile && "text-sm"
                         )}
+                        onKeyDown={handleKeyDown}
                         onClick={(e) => e.stopPropagation()}
                       />
                       <div className="relative">
@@ -125,6 +135,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ incomes, onUpdateIncomes 
                             "pl-6 w-full no-spin",
                             isMobile && "text-sm"
                           )}
+                          onKeyDown={handleKeyDown}
                           onClick={(e) => e.stopPropagation()}
                         />
                       </div>
