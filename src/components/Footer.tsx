@@ -2,37 +2,37 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <footer style={{
-      width: '100%',
-      padding: '20px',
-      textAlign: 'center',
-      fontSize: '0.75rem', // 12px
-      color: '#666',
-      marginTop: 'auto'
-    }}>
-      Cashkey visualizes annual cash flow in a {' '}
+    <footer className="footer">
+      Money is like water: it flows in and out of our lives. 
+      <br />
+      We can direct the flow toward our highest commitments to nourish ourselves and our world.
+      &mdash;&nbsp;Lynne&nbsp;Twist, {' '}
+      <a 
+        href="https://bookshop.org/p/books/the-soul-of-money-transforming-your-relationship-with-money-and-life-lynne-twist/11183499" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="footer-link"
+      >The Soul of Money</a>
+      <br /><br />
+      Cashkey visualizes cash flow in a {' '}
       <a 
         href="https://en.wikipedia.org/wiki/Sankey_diagram" 
         target="_blank" 
         rel="noopener noreferrer"
-        style={{
-          color: '#666',
-          textDecoration: 'underline'
-        }}
+        className="footer-link"
       >
         Sankey diagram
       </a>
-      .<br />
-      It does not use a database, it stores all data in the URL.{' '}
-      <br />An experiment with{' '}
+      .
+      <br />
+      It stores your data in the URL, not in a database.
+      <br />
+      Cashkey is an experiment started in{' '}
       <a 
         href="https://lovable.dev" 
         target="_blank" 
         rel="noopener noreferrer"
-        style={{
-          color: '#666',
-          textDecoration: 'underline'
-        }}
+        className="footer-link"
       >
         Lovable
       </a>
@@ -41,10 +41,7 @@ const Footer: React.FC = () => {
         href="https://ginatrapani.org" 
         target="_blank" 
         rel="noopener noreferrer"
-        style={{
-          color: '#666',
-          textDecoration: 'underline'
-        }}
+        className="footer-link"
       >
         Gina Trapani
       </a>

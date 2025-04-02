@@ -76,6 +76,15 @@
   .animated-link {
     transition: stroke 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out, stroke-width 0.3s ease-in-out;
   }
+
+  /* Footer styles */
+  .footer {
+    @apply w-full p-5 text-center text-xs text-muted-foreground mt-auto;
+  }
+
+  .footer-link {
+    @apply text-muted-foreground underline hover:text-muted-foreground/80 transition-colors;
+  }
 }
 
 .sankey-container svg {

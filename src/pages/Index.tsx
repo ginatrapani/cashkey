@@ -8,6 +8,10 @@ import { Share2, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
+const title = "Cashkey";
+const tagline = "Visualize your cash flow";
+const description = "Money comes, money goes. How does your money move? Visualize your cash flow with a simple diagram that's easy to make and private.";
+
 const Index = () => {
   const [incomes, setIncomes] = useState<CashflowItem[]>([]);
   const [expenses, setExpenses] = useState<CashflowItem[]>([]);
@@ -15,27 +19,27 @@ const Index = () => {
   // Update the document title and metadata
   useEffect(() => {
     // Set the page title
-    document.title = 'Cashkey | Visualize your annual cash flow';
+    document.title = `${title} | ${tagline}`;
     
     // Update meta tags for social sharing
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Visualize your annual cash flow');
+      metaDescription.setAttribute('content', description);
     } else {
       const newMeta = document.createElement('meta');
       newMeta.name = 'description';
-      newMeta.content = 'Visualize your annual cash flow';
+      newMeta.content = description;
       document.head.appendChild(newMeta);
     }
     
     // Add Open Graph meta tags for social sharing
     const ogTags = [
-      { property: 'og:title', content: 'Cashkey' },
-      { property: 'og:description', content: 'Visualize your annual cash flow' },
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
       { property: 'og:type', content: 'website' },
       { property: 'og:url', content: window.location.href },
-      { property: 'twitter:title', content: 'Cashkey' },
-      { property: 'twitter:description', content: 'Visualize your annual cash flow' },
+      { property: 'twitter:title', content: title },
+      { property: 'twitter:description', content: description },
     ];
     
     ogTags.forEach(tag => {
@@ -112,11 +116,11 @@ const Index = () => {
         <header className="text-center">
           <h1 className="text-4xl font-bold tracking-tight mb-2 bg-clip-text animate-slide-up">
             <a href="/" className="hover:opacity-80 transition-opacity">
-              Cashkey
+              {title}
             </a>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up [animation-delay:100ms]">
-            Visualize your annual cash flow
+            {tagline}
           </p>
           <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/5 text-primary/80 text-xs font-medium mt-2 animate-fade-in">
             <span className="mr-1">💸</span> All changes auto-save to URL
