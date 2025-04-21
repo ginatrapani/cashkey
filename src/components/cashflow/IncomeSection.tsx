@@ -31,7 +31,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ incomes, onUpdateIncomes 
 
   const handleAddIncome = () => {
     if (!newIncomeName || !newIncomeAmount) return;
-
+    
     let amount = parseInt(newIncomeAmount.replace(/[^0-9]/g, ''));
     if (isNaN(amount) || amount <= 0) return;
     
@@ -39,13 +39,13 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ incomes, onUpdateIncomes 
     if (newIncomePeriod === 'monthly') {
       amount = amount * 12;
     }
-
+    
     const newIncome: CashflowItem = {
       id: crypto.randomUUID(),
       name: newIncomeName,
       amount: amount,
     };
-
+    
     onUpdateIncomes([...incomes, newIncome]);
     setNewIncomeName('');
     setNewIncomeAmount('');
@@ -101,9 +101,9 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ incomes, onUpdateIncomes 
         <div className="space-y-4">
           {/* Existing incomes */}
           <div className="space-y-2">
-            {incomes.map((income) => (
-              <div 
-                key={income.id} 
+          {incomes.map((income) => (
+            <div 
+              key={income.id} 
                 className={cn(
                   "flex items-center justify-between p-3 bg-secondary/50 rounded-lg animate-slide-up cursor-pointer hover:bg-secondary/70 transition-colors",
                   editingIncome?.id === income.id && "bg-secondary"
@@ -167,27 +167,27 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ incomes, onUpdateIncomes 
                   </>
                 ) : (
                   <>
-                    <div className="flex-1 mr-4">
-                      <p className="font-medium">{income.name}</p>
-                      <p className="text-muted-foreground">{formatCurrency(income.amount)}/year</p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
+              <div className="flex-1 mr-4">
+                <p className="font-medium">{income.name}</p>
+                <p className="text-muted-foreground">{formatCurrency(income.amount)}/year</p>
+              </div>
+              <Button 
+                variant="ghost" 
+                size="icon" 
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteIncome(income.id);
                       }}
-                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+              >
+                <X className="h-4 w-4" />
+              </Button>
                   </>
                 )}
-              </div>
-            ))}
+            </div>
+          ))}
           </div>
-
+          
           {/* New income input */}
           <div className="pt-2 space-y-3">
             <div className="flex gap-3">
@@ -230,8 +230,8 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ incomes, onUpdateIncomes 
                 </SelectContent>
               </Select>
             </div>
-            <Button
-              onClick={handleAddIncome}
+            <Button 
+              onClick={handleAddIncome} 
               className="w-full bg-income hover:bg-income/90"
             >
               <Plus className="h-4 w-4 mr-2" /> Add Income

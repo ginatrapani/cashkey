@@ -31,7 +31,7 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ expenses, onUpdateExpen
 
   const handleAddExpense = () => {
     if (!newExpenseName || !newExpenseAmount) return;
-
+    
     let amount = parseInt(newExpenseAmount.replace(/[^0-9]/g, ''));
     if (isNaN(amount) || amount <= 0) return;
     
@@ -39,13 +39,13 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ expenses, onUpdateExpen
     if (newExpensePeriod === 'monthly') {
       amount = amount * 12;
     }
-
+    
     const newExpense: CashflowItem = {
       id: crypto.randomUUID(),
       name: newExpenseName,
       amount: amount,
     };
-
+    
     onUpdateExpenses([...expenses, newExpense]);
     setNewExpenseName('');
     setNewExpenseAmount('');
@@ -101,9 +101,9 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ expenses, onUpdateExpen
         <div className="space-y-4">
           {/* Existing expenses */}
           <div className="space-y-2">
-            {expenses.map((expense) => (
-              <div 
-                key={expense.id} 
+          {expenses.map((expense) => (
+            <div 
+              key={expense.id} 
                 className={cn(
                   "flex items-center justify-between p-3 bg-secondary/50 rounded-lg animate-slide-up cursor-pointer hover:bg-secondary/70 transition-colors",
                   editingExpense?.id === expense.id && "bg-secondary"
@@ -167,27 +167,27 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ expenses, onUpdateExpen
                   </>
                 ) : (
                   <>
-                    <div className="flex-1 mr-4">
-                      <p className="font-medium">{expense.name}</p>
-                      <p className="text-muted-foreground">{formatCurrency(expense.amount)}/year</p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
+              <div className="flex-1 mr-4">
+                <p className="font-medium">{expense.name}</p>
+                <p className="text-muted-foreground">{formatCurrency(expense.amount)}/year</p>
+              </div>
+              <Button 
+                variant="ghost" 
+                size="icon" 
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteExpense(expense.id);
                       }}
-                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+              >
+                <X className="h-4 w-4" />
+              </Button>
                   </>
                 )}
-              </div>
-            ))}
+            </div>
+          ))}
           </div>
-
+          
           {/* New expense input */}
           <div className="pt-2 space-y-3">
             <div className="flex gap-3">
@@ -230,8 +230,8 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ expenses, onUpdateExpen
                 </SelectContent>
               </Select>
             </div>
-            <Button
-              onClick={handleAddExpense}
+            <Button 
+              onClick={handleAddExpense} 
               className="w-full bg-expense hover:bg-expense/90"
             >
               <Plus className="h-4 w-4 mr-2" /> Add Expense

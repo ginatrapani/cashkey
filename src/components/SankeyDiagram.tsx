@@ -16,7 +16,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
   const svgRef = useRef<SVGSVGElement>(null);
   const data = processSankeyData(incomes, expenses);
   const isMobile = useIsMobile();
-
+  
   useEffect(() => {
     if (!svgRef.current || !data.nodes.length) return;
 
@@ -25,10 +25,10 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
 
     // Set up dimensions
     const margin = isMobile 
-      ? { top: 20, right: 100, bottom: 20, left: 100 }
+      ? { top: 30, right: 50, bottom: 30, left: 50 } // Minimal side margins for mobile
       : { top: 30, right: 180, bottom: 30, left: 180 };
     const width = svgRef.current.clientWidth;
-    const height = isMobile ? 400 : 450;
+    const height = isMobile ? 450 : 450;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -44,8 +44,8 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
 
     // Set up the Sankey generator
     const sankeyGenerator = sankey()
-      .nodeWidth(isMobile ? 15 : 20)
-      .nodePadding(isMobile ? 10 : 15)
+      .nodeWidth(isMobile ? 10 : 20)
+      .nodePadding(isMobile ? 12 : 15)
       .extent([[0, 0], [innerWidth, innerHeight]]);
 
     // Generate the Sankey data
@@ -68,13 +68,18 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       links: data.links
     });
 
-    // Adjust budget node height if needed
-    if (!isMobile) {
-      const budgetNode = sankeyData.nodes.find((n: any) => n.name === 'Budget');
-      if (budgetNode) {
+    // Center the budget node vertically
+    const budgetNode = sankeyData.nodes.find((n: any) => n.name === 'Budget');
+    if (budgetNode) {
+      const centerY = innerHeight / 2;
+      const nodeHeight = budgetNode.y1 - budgetNode.y0;
+      budgetNode.y0 = centerY - (nodeHeight / 2);
+      budgetNode.y1 = centerY + (nodeHeight / 2);
+      
+      // Additional adjustments for desktop view
+      if (!isMobile) {
         const minHeight = innerHeight * 0.5;
         if (budgetNode.y1 - budgetNode.y0 < minHeight) {
-          const centerY = (budgetNode.y0 + budgetNode.y1) / 2;
           budgetNode.y0 = centerY - (minHeight / 2);
           budgetNode.y1 = centerY + (minHeight / 2);
         }
@@ -134,7 +139,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       targetOffsets[d.target.index] += targetHeight;
 
       // Control points for the curves
-      const curvature = isMobile ? 0.3 : 0.5;
+      const curvature = isMobile ? 0.2 : 0.5;
       const controlPoint1X = sourceX * (1 - curvature) + targetX * curvature;
       const controlPoint2X = sourceX * curvature + targetX * (1 - curvature);
 
@@ -160,7 +165,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       .attr('class', 'link')
       .attr('d', createLinkPath)
       .attr('fill', (_, i) => `url(#gradient-${i})`)
-      .attr('fill-opacity', 0.7)
+      .attr('fill-opacity', isMobile ? 0.8 : 0.7)
       .attr('stroke', 'none');
 
     // Draw the nodes
@@ -187,7 +192,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       .attr('x', (d: any) => {
         const isBudget = d.name === 'Budget';
         const isLeftSide = sankeyData.nodes.indexOf(d) < sankeyData.nodes.findIndex((n: any) => n.name === 'Budget');
-        const labelOffset = isMobile ? 8 : 10;
+        const labelOffset = isMobile ? 5 : 10; // Further reduced offset for mobile
         return isBudget ? d.x0 + (d.x1 - d.x0) / 2 :
                isLeftSide ? d.x0 - labelOffset : d.x1 + labelOffset;
       })
@@ -198,6 +203,19 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
         const isLeftSide = sankeyData.nodes.indexOf(d) < sankeyData.nodes.findIndex((n: any) => n.name === 'Budget');
         return isBudget ? 'middle' : isLeftSide ? 'end' : 'start';
       })
+      .attr('transform', (d: any) => {
+        // Tilt labels diagonally on mobile
+        if (isMobile) {
+          const isBudget = d.name === 'Budget';
+          if (isBudget) return ''; // No rotation for budget node
+          
+          const isLeftSide = sankeyData.nodes.indexOf(d) < sankeyData.nodes.findIndex((n: any) => n.name === 'Budget');
+          // Left side labels tilt up, right side labels tilt down
+          const angle = isLeftSide ? 30 : -30; // Slightly less angled for better readability
+          return `rotate(${angle}, ${isLeftSide ? d.x0 - 8 : d.x1 + 8}, ${d.y0 + (d.y1 - d.y0) / 2})`;
+        }
+        return '';
+      })
       .attr('class', 'label')
       .style('font-size', isMobile ? '9px' : '12px')
       .style('fill', '#4b5563')
@@ -205,13 +223,42 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
         if (d.name === 'Budget') return '';
         // Show "< 1%" for percentages under 1%, otherwise show rounded integer
         const percentage = d.percentage < 1 ? '<1' : Math.round(d.percentage);
-        return `${percentage}% ${d.name}`;
+        let displayName = d.name;
+        
+        if (isMobile) {
+          // Trim longer names on mobile
+          if (displayName.length > 12) {
+            displayName = displayName.substring(0, 10) + '..';
+          }
+          // Keep on same line but use very compact format
+          return `${percentage}%${displayName}`;
+        }
+        
+        return `${percentage}% ${displayName}`;
       });
+
+    // Adjust text for mobile
+    if (isMobile) {
+      nodeGroups.selectAll('text')
+        .style('font-size', '8px') // Revert to 8px for mobile
+        .each(function(d: any) {
+          // Add a shadow effect to improve readability now that labels are closer to nodes
+          const textElem = d3.select(this);
+          const original = textElem.text();
+          
+          if (original && original.length > 0) {
+            textElem
+              .attr('stroke', 'white')
+              .attr('stroke-width', '0.8px')
+              .attr('paint-order', 'stroke');
+          }
+        });
+    }
 
   }, [data, incomes, expenses, isMobile]);
 
   return (
-    <div className={cn("w-full mt-6", className)} style={{ height: isMobile ? 400 : 450 }}>
+    <div className={cn("w-full mt-6", className)} style={{ height: isMobile ? 450 : 450 }}>
       {data.nodes.length > 0 ? (
         <div className="flex justify-center">
           <div className="w-full max-w-[1200px]">
