@@ -25,10 +25,10 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
 
     // Set up dimensions
     const margin = isMobile 
-      ? { top: 20, right: 80, bottom: 20, left: 80 }
+      ? { top: 20, right: 100, bottom: 20, left: 100 }
       : { top: 30, right: 180, bottom: 30, left: 180 };
     const width = svgRef.current.clientWidth;
-    const height = isMobile ? 350 : 450;
+    const height = isMobile ? 400 : 450;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -187,7 +187,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
       .attr('x', (d: any) => {
         const isBudget = d.name === 'Budget';
         const isLeftSide = sankeyData.nodes.indexOf(d) < sankeyData.nodes.findIndex((n: any) => n.name === 'Budget');
-        const labelOffset = isMobile ? 3 : 10;
+        const labelOffset = isMobile ? 8 : 10;
         return isBudget ? d.x0 + (d.x1 - d.x0) / 2 :
                isLeftSide ? d.x0 - labelOffset : d.x1 + labelOffset;
       })
@@ -199,7 +199,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
         return isBudget ? 'middle' : isLeftSide ? 'end' : 'start';
       })
       .attr('class', 'label')
-      .style('font-size', isMobile ? '10px' : '12px')
+      .style('font-size', isMobile ? '9px' : '12px')
       .style('fill', '#4b5563')
       .text((d: any) => {
         if (d.name === 'Budget') return '';
@@ -211,11 +211,11 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ incomes, expenses, classN
   }, [data, incomes, expenses, isMobile]);
 
   return (
-    <div className={cn("w-full mt-6", className)} style={{ height: isMobile ? 350 : 450 }}>
+    <div className={cn("w-full mt-6", className)} style={{ height: isMobile ? 400 : 450 }}>
       {data.nodes.length > 0 ? (
         <div className="flex justify-center">
           <div className="w-full max-w-[1200px]">
-            <svg ref={svgRef} style={{ width: '100%', height: '100%', overflow: isMobile ? 'hidden' : 'visible' }} />
+            <svg ref={svgRef} style={{ width: '100%', height: '100%', overflow: 'visible' }} />
           </div>
         </div>
       ) : (
