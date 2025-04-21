@@ -78,6 +78,9 @@ const Index = () => {
       setIncomes([
         { id: uuidv4(), name: '💵 Paycheck', amount: 54132 }, // Median U.S. annual salary
         { id: uuidv4(), name: '💰 Side Hustle', amount: 5000 }, // As specified
+        { id: uuidv4(), name: '🤑 Interest', amount: 500 }, // As specified
+        { id: uuidv4(), name: '📈 Dividends', amount: 500 }, // As specified
+        { id: uuidv4(), name: '💳 Credit Card Cashback', amount: 100 }, // As specified
       ]);
       
       setExpenses([
